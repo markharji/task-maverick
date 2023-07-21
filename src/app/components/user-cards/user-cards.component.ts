@@ -13,6 +13,7 @@ export class UserCardsComponent implements OnInit, OnDestroy {
   savedUsers$ = new BehaviorSubject<User[]>([]);
   private subscription: Subscription | undefined;
   userToMap$ = new BehaviorSubject<any>({});
+  loading$ = new BehaviorSubject<boolean>(true);
 
   active = 1;
 
@@ -23,6 +24,8 @@ export class UserCardsComponent implements OnInit, OnDestroy {
       (users) => {
         this.users$.next(users);
         this.userToMap$.next(users[0]);
+
+        this.loading$.next(false);
       },
       (error) => {
         console.error('Error fetching users and weather data:', error);
@@ -47,18 +50,11 @@ export class UserCardsComponent implements OnInit, OnDestroy {
 
   onNavChange(e: any) {
     if (e.nextId === 2) {
-      this.userToMap(this.savedUsers$.getValue()[0] || null);
+      this.userToMap(this.savedUsers$.getValue()[0] || ({} as User));
     }
 
     if (e.nextId === 1) {
       this.userToMap(this.users$.getValue()[0]);
     }
   }
-
-  // updateSavedUsersList() {
-  //   this.userService.getSavedUsers().subscribe((users: User[]) => {
-  //     console.log(users);
-  //     this.savedUsers$.next(users);
-  //   });
-  // }
 }

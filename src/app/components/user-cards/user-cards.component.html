@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="row">
+  <div class="row" *ngIf="!(loading$ | async); else spinner">
     <div class="col-md-4 column-layout">
       <ul
         ngbNav
@@ -39,12 +39,49 @@
 
       <div [ngbNavOutlet]="nav" class="mt-2"></div>
     </div>
-    <div class="col-md-8 weather-map-layout">
+    <div
+      class="col-md-8 weather-map-layout"
+      *ngIf="(userToMap$ | async).email; else noUserSave"
+    >
       <app-user-map [user]="userToMap$ | async" class="user-map"></app-user-map>
       <app-hourly-weather
         [user]="userToMap$ | async"
         class="hourly-weather"
       ></app-hourly-weather>
     </div>
+
+    <ng-template #noUserSave>
+      <h3 class="alert alert-info" style="text-align: center">
+        No User Have Been Saved
+      </h3>
+    </ng-template>
   </div>
+  <ng-template #spinner>
+    <div style="margin-top: 30%; margin-left: 40%">
+      <div class="spinner-grow text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="spinner-grow text-secondary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="spinner-grow text-success" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="spinner-grow text-danger" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="spinner-grow text-warning" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="spinner-grow text-info" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="spinner-grow text-light" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="spinner-grow text-dark" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </ng-template>
 </div>
